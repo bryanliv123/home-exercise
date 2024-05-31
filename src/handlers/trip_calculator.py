@@ -1,36 +1,42 @@
 from __future__ import annotations
 import logging
+
 from WazeRouteCalculator import WazeRouteCalculator
 
-from utils import time_to_minutes, subtract_minutes_from_time
+from utils import time_to_minutes, subtract_minutes_from_time, split_array_into_tuples
 
 class TripCalculator():
-    """Calculate trip duration and departure time"""
-
-    def __init__(self, from_address: str, to_address: str, stops: list[tuple], arrival_time: str, region: str = "IL") -> None:
-        """Inits Trip Calculator Class.
+    def __init__(self, from_address: str, to_address: str, stops: list[str], arrival_time: str, region: str = "IL") -> None:
+        """Calculate trip duration and departure time
 
         Args:
             from_address: Source City Name (str).
             to_address: Destination City Name (str).
-            stops: Optional Stops (List of tuples(city name, duration in minutes)).
+            stops: Optional Stops (List of [location, duration, ...]).
             arrival_time: Arrival Time At Destination City (str)
             region: Optional Region (defaults to "IL")
         """
-        self.__set_up_logger__()
-        
+        self.__setup_logger__()
 
-        self.stops = stops
         self.region = region
         self.to_address = to_address
         self.from_address = from_address
         self.arrival_time = arrival_time
+        self.stops = split_array_into_tuples(stops.split(',')) if stops else []
 
-        self.duration_per_stop = dict((x, time_to_minutes(y)) for x, y in stops)
+        self.duration_per_stop = dict((x, time_to_minutes(y)) for x, y in self.stops)
 
-        self.total_trip_time = self.calc_trip_duration()
+    def calc_trip_departure_time(self):
+        '''Calculate trip departure time in HH:mm format'''
+
+        # Calculate total trip duration in minutes
+        total_trip_time = self.calc_trip_duration()
+
+        # Subtract total trip time from desired arrival time
+        return subtract_minutes_from_time(total_trip_time, self.arrival_time)
+
         
-    def calc_trip_duration(self) -> tuple():
+    def calc_trip_duration(self) -> float:
         '''Calculate trip duration in minutes'''
 
         duration_per_stop = self.duration_per_stop
@@ -39,7 +45,7 @@ class TripCalculator():
 
         all_trip_locations = self.get_all_trip_locations()
 
-        for i in range(0, len(all_trip_locations) - 1):
+        for i in range(len(all_trip_locations)):
             src = all_trip_locations[i]
             dst = all_trip_locations[i + 1]
 
@@ -69,9 +75,6 @@ class TripCalculator():
         except:
             raise Exception("Failed To Calculate Route!")
     
-    def calc_trip_departure_time(self):
-        '''Calculate trip departure time in HH:mm format'''
-        return subtract_minutes_from_time(self.total_trip_time, self.arrival_time)
 
     def get_all_trip_locations(self):
         '''Return list of all trip locations'''
@@ -87,7 +90,7 @@ class TripCalculator():
 
         return [from_address, *stops_locations, to_address]
 
-    def __set_up_logger__(self):
+    def __setup_logger__(self):
         # set up logger
         logger = logging.getLogger('WazeRouteCalculator.WazeRouteCalculator')
 
