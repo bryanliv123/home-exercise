@@ -2,7 +2,7 @@ from __future__ import annotations
 import logging
 from WazeRouteCalculator import WazeRouteCalculator
 
-from utils import time_to_minutes, time_to_minutes_after_midnight, minutes_after_midnight_to_time
+from utils import time_to_minutes, subtract_minutes_from_time
 
 class TripCalculator():
     """Calculate trip duration and departure time"""
@@ -17,12 +17,8 @@ class TripCalculator():
             arrival_time: Arrival Time At Destination City (str)
             region: Optional Region (defaults to "IL")
         """
+        self.__set_up_logger__()
         
-        # set up logger
-        logger = logging.getLogger('WazeRouteCalculator.WazeRouteCalculator')
-        logger.setLevel(logging.INFO)
-        handler = logging.StreamHandler()
-        logger.addHandler(handler)
 
         self.stops = stops
         self.region = region
@@ -39,7 +35,7 @@ class TripCalculator():
 
         duration_per_stop = self.duration_per_stop
 
-        total_trip_time = 0
+        total_trip_time: float = 0
 
         all_trip_locations = self.get_all_trip_locations()
 
@@ -57,13 +53,13 @@ class TripCalculator():
             if dst in duration_per_stop:
                 stop_duration = self.duration_per_stop[dst]
 
-                print(f'stopping at {dst} for {stop_duration} minutes')
+                print(f'Stopping at {dst} for {stop_duration} minutes')
 
                 total_trip_time += stop_duration
 
         return total_trip_time
 
-    def calc_route_between_two_points(self, src: str, dst: str, region: str = "IL") -> tuple():
+    def calc_route_between_two_points(self, src: str, dst: str, region: str = "IL") -> tuple[float, float]:
         '''Calculate route time using Waze API'''
         
         try:
@@ -75,20 +71,11 @@ class TripCalculator():
     
     def calc_trip_departure_time(self):
         '''Calculate trip departure time in HH:mm format'''
-
-        arrival_time, total_trip_time = self.arrival_time, self.total_trip_time
-
-        # Convert arrival_time to number of minutes
-        arrival_time_in_minutes = time_to_minutes_after_midnight(arrival_time)
-
-        res = arrival_time_in_minutes - total_trip_time
-
-        # Convert minutes to HH:mm format
-        return minutes_after_midnight_to_time(res)
+        return subtract_minutes_from_time(self.total_trip_time, self.arrival_time)
 
     def get_all_trip_locations(self):
         '''Return list of all trip locations'''
-        
+
         from_address, to_address, stops = self.from_address, self.to_address, self.stops
 
         stops_locations: list[str] = []
@@ -99,3 +86,13 @@ class TripCalculator():
             stops_locations.append(location)
 
         return [from_address, *stops_locations, to_address]
+
+    def __set_up_logger__(self):
+        # set up logger
+        logger = logging.getLogger('WazeRouteCalculator.WazeRouteCalculator')
+
+        logger.setLevel(logging.INFO)
+        
+        handler = logging.StreamHandler()
+
+        logger.addHandler(handler)
