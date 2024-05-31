@@ -1,16 +1,17 @@
-from handlers import CmdArgsParser, RouteCalculator
+from handlers import CmdArgsParser, TripCalculator
+from utils import split_array_into_tuples
 
 if __name__ == "__main__":
     args_parser = CmdArgsParser()
 
-    route_calculator_handler = RouteCalculator()
-
     args = args_parser.get_arguments()
 
-    from_address = args.src
+    src, dst, stops, arrival_time = args.src, args.dst, args.stops, args.arrival_time
+    
+    stops_tuples = split_array_into_tuples(stops.split(','))
 
-    to_address = args.dst
+    trip_calculator = TripCalculator(from_address=src, to_address=dst, stops=stops_tuples, arrival_time=arrival_time)
 
-    result = route_calculator_handler.calc_route(from_address, to_address)
+    departure_time = trip_calculator.calc_trip_departure_time()
 
-    print(result)
+    print(f"leave {src} at {departure_time} to reach {dst} by {arrival_time}")

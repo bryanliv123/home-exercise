@@ -1,2 +1,2 @@
 from .cmd_args_parser import CmdArgsParser
-from .route_calculator import RouteCalculator
+from .trip_calculator import TripCalculator

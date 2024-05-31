@@ -9,7 +9,5 @@ class CmdArgsParser():
         self.parser.add_argument('--stops', help='List of stops')
         self.parser.add_argument('--arrival_time', help='Arrival Time')
 
-        self.parser.print_help()
-
     def get_arguments(self):
         return self.parser.parse_args()
