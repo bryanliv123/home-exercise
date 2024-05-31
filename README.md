@@ -22,7 +22,6 @@ leave eilat at 14:20 to reach Haifa by 20:30
 * --arrival_time - Desired Arrival Time At Destination
 
 ### Trip without stops
-stops is an optional list
 ```bash
 $ python .\main.py --src ariel --dst tel-aviv --arrival_time 09:00
 From: ariel - to: tel-aviv
