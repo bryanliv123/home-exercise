@@ -1,6 +1,12 @@
 # Home Exercise
 
-Home Exercise is a Python project for calculating trip start time.
+Home Exercise is a Python project for various trip calculations.
+
+## Installation
+```bash
+$ pip install -r requirements.txt
+```
+
 
 ## Usage
 
@@ -27,4 +33,23 @@ $ python .\main.py --src ariel --dst tel-aviv --arrival_time 09:00
 From: ariel - to: tel-aviv
 Time 35.93 minutes, distance 48.19 km.
 leave ariel at 08:24 to reach tel-aviv by 09:00
+```
+
+## Architecture
+The program uses a class called TripCalculator which exposes several methods.
+
+* calc_trip_departure_time - Calculate trip departure time in HH:mm format
+* calc_trip_duration- Calculate trip duration in minutes
+* calc_route_between_two_points - Calculate route info (duration, distance) between two locations
+* get_all_trip_locations - Returns list of all trip locations
+
+Under the hood, TripCalculator makes use of a package called WazeRouteCalculator.
+TripCalculator provides a level of abstraction above this package, and added new features like stops and departure time calculation. 
+
+```bash
+trip_calculator = TripCalculator(from_address=src, to_address=dst, stops=stops, arrival_time=arrival_time)
+
+departure_time = trip_calculator.calc_trip_departure_time()
+
+print(f"leave {src} at {departure_time} to reach {dst} by {arrival_time}")
 ```
