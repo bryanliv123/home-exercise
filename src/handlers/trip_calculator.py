@@ -1,12 +1,14 @@
 from __future__ import annotations
 import logging
 
+from typing import List, Tuple, Dict
+
 from WazeRouteCalculator import WazeRouteCalculator
 
 from utils import time_to_minutes, subtract_minutes_from_time
 
 class TripCalculator():
-    def __init__(self, from_address: str, to_address: str, stops: list[str], arrival_time: str, region: str = "IL") -> None:
+    def __init__(self, from_address: str, to_address: str, stops: List[Tuple[str, int]], arrival_time: str, region: str = "IL") -> None:
         """Calculate trip duration and departure time
 
         Args:
@@ -28,7 +30,7 @@ class TripCalculator():
         self.stops = dict((x, time_to_minutes(y)) for x, y in stops)
 
         # Save each route and its calculated result
-        self.previous_routes = {}
+        self.previous_routes: Dict[str, int] = {}
 
     def calc_trip_departure_time(self):
         '''Calculate trip departure time in HH:mm format'''
@@ -61,7 +63,7 @@ class TripCalculator():
 
             # check if dst is one of the stops
             if dst in stops:
-                stop_duration = self.stops[dst]
+                stop_duration = stops[dst]
 
                 print(f'Stopping at {dst} for {stop_duration} minutes')
 
@@ -69,7 +71,7 @@ class TripCalculator():
 
         return total_trip_time
 
-    def calc_route_between_two_points(self, src: str, dst: str, region: str = "IL") -> tuple[float, float]:
+    def calc_route_between_two_points(self, src: str, dst: str, region: str = "IL") -> Tuple[float, float]:
         '''Calculate route time using Waze API'''
         
         key = f"{src.lower()}-{dst.lower()}"
@@ -91,7 +93,7 @@ class TripCalculator():
             raise Exception("Failed To Calculate Route!")
     
 
-    def get_all_trip_locations(self):
+    def get_all_trip_locations(self) -> list[str]:
         '''Return list of all trip locations'''
 
         from_address, to_address, stops = self.from_address, self.to_address, self.stops

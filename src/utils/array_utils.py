@@ -1,4 +1,6 @@
-def split_array_into_tuples(arr):
+from typing import List, Tuple
+
+def split_array_into_tuples(arr) -> List[Tuple]:
     '''Loops through list and insert every two items into tuple'''
 
     result = []
