@@ -1,5 +1,7 @@
 import argparse
+
 from utils import split_array_into_tuples
+
 
 class CmdArgsParser():
     def __init__(self) -> None:

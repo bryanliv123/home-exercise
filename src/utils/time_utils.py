@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 
+
 def time_to_minutes(time: str):
     '''Converts time format to minutes'''
     

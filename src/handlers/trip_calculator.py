@@ -1,11 +1,12 @@
 from __future__ import annotations
-import logging
 
-from typing import List, Tuple, Dict
+import logging
+from typing import Dict, List, Tuple
 
 from WazeRouteCalculator import WazeRouteCalculator
 
-from utils import time_to_minutes, subtract_minutes_from_time
+from utils import subtract_minutes_from_time, time_to_minutes
+
 
 class TripCalculator():
     def __init__(self, from_address: str, to_address: str, stops: List[Tuple[str, int]], arrival_time: str, region: str = "IL") -> None:
@@ -96,11 +97,9 @@ class TripCalculator():
     def get_all_trip_locations(self) -> list[str]:
         '''Return list of all trip locations'''
 
-        from_address, to_address, stops = self.from_address, self.to_address, self.stops
+        from_address, stops, to_address = self.from_address, self.stops, self.to_address
 
-        stops_locations = list(stops.keys())
-
-        return [from_address, *stops_locations, to_address]
+        return [from_address, *list(stops.keys()), to_address]
 
     def __setup_logger__(self):
         # set up logger
