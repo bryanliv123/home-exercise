@@ -3,7 +3,7 @@ import logging
 
 from WazeRouteCalculator import WazeRouteCalculator
 
-from utils import time_to_minutes, subtract_minutes_from_time, split_array_into_tuples
+from utils import time_to_minutes, subtract_minutes_from_time
 
 class TripCalculator():
     def __init__(self, from_address: str, to_address: str, stops: list[str], arrival_time: str, region: str = "IL") -> None:
@@ -12,7 +12,7 @@ class TripCalculator():
         Args:
             from_address: Source City Name (str).
             to_address: Destination City Name (str).
-            stops: Optional Stops (List of [location, duration, ...]).
+            stops: Optional Stops (List of tuples (Location, Duration)).
             arrival_time: Arrival Time At Destination City (str)
             region: Optional Region (defaults to "IL")
         """
@@ -23,11 +23,9 @@ class TripCalculator():
         self.from_address = from_address
         self.arrival_time = arrival_time
         
-        stops_tuples = split_array_into_tuples(stops.split(',')) if stops else []
-
         # Store each stop and duration
         # {"stop_name": duration, ...}
-        self.stops = dict((x, time_to_minutes(y)) for x, y in stops_tuples)
+        self.stops = dict((x, time_to_minutes(y)) for x, y in stops)
 
         # Save each route and its calculated result
         self.previous_routes = {}

@@ -1,4 +1,5 @@
 import argparse
+from utils import split_array_into_tuples
 
 class CmdArgsParser():
     def __init__(self) -> None:
@@ -10,4 +11,10 @@ class CmdArgsParser():
         self.parser.add_argument('--arrival_time', help='Arrival Time')
 
     def get_arguments(self):
-        return self.parser.parse_args()
+        args = self.parser.parse_args()
+
+        src, dst ,stops, arrival_time = args.src, args. dst, args.stops, args.arrival_time
+
+        parsed_stops = split_array_into_tuples(stops.split(',')) if stops else []
+
+        return src, dst, parsed_stops, arrival_time

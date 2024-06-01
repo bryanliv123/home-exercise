@@ -3,9 +3,7 @@ from handlers import CmdArgsParser, TripCalculator
 if __name__ == "__main__":
     args_parser = CmdArgsParser()
 
-    args = args_parser.get_arguments()
-
-    src, dst, stops, arrival_time = args.src, args.dst, args.stops, args.arrival_time
+    src, dst, stops, arrival_time = args_parser.get_arguments()
     
     trip_calculator = TripCalculator(from_address=src, to_address=dst, stops=stops, arrival_time=arrival_time)
 
