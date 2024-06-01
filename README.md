@@ -36,6 +36,8 @@ leave ariel at 08:24 to reach tel-aviv by 09:00
 ```
 
 ## Architecture
+![image](https://github.com/bryanliv123/home-exercise/assets/60899499/807c3a5f-73b3-4d9c-8cd4-0e4221e58eff)
+
 The program uses a class called TripCalculator which exposes several methods.
 
 * calc_trip_departure_time - Calculate trip departure time in HH:mm format
@@ -53,5 +55,4 @@ departure_time = trip_calculator.calc_trip_departure_time()
 
 print(f"leave {src} at {departure_time} to reach {dst} by {arrival_time}")
 ```
-![image](https://github.com/bryanliv123/home-exercise/assets/60899499/e89ad389-5bbe-4c79-b581-b28908fbb073)
 
