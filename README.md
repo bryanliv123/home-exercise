@@ -4,6 +4,7 @@ Home Exercise is a Python project for various trip calculations.
 
 ## Installation
 ```bash
+$ .\venv\Scripts\activate
 $ pip install -r requirements.txt
 ```
 
