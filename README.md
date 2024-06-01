@@ -53,3 +53,5 @@ departure_time = trip_calculator.calc_trip_departure_time()
 
 print(f"leave {src} at {departure_time} to reach {dst} by {arrival_time}")
 ```
+![image](https://github.com/bryanliv123/home-exercise/assets/60899499/e89ad389-5bbe-4c79-b581-b28908fbb073)
+
