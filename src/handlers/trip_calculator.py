@@ -22,9 +22,15 @@ class TripCalculator():
         self.to_address = to_address
         self.from_address = from_address
         self.arrival_time = arrival_time
-        self.stops = split_array_into_tuples(stops.split(',')) if stops else []
+        
+        stops_tuples = split_array_into_tuples(stops.split(',')) if stops else []
 
-        self.duration_per_stop = dict((x, time_to_minutes(y)) for x, y in self.stops)
+        # Store each stop and duration
+        # {"stop_name": duration, ...}
+        self.stops = dict((x, time_to_minutes(y)) for x, y in stops_tuples)
+
+        # Save each route and its calculated result
+        self.previous_routes = {}
 
     def calc_trip_departure_time(self):
         '''Calculate trip departure time in HH:mm format'''
@@ -39,13 +45,13 @@ class TripCalculator():
     def calc_trip_duration(self) -> float:
         '''Calculate trip duration in minutes'''
 
-        duration_per_stop = self.duration_per_stop
+        stops = self.stops
 
         total_trip_time: float = 0
 
         all_trip_locations = self.get_all_trip_locations()
 
-        for i in range(len(all_trip_locations)):
+        for i in range(len(all_trip_locations) - 1):
             src = all_trip_locations[i]
             dst = all_trip_locations[i + 1]
 
@@ -56,8 +62,8 @@ class TripCalculator():
             total_trip_time += duration_in_minutes
 
             # check if dst is one of the stops
-            if dst in duration_per_stop:
-                stop_duration = self.duration_per_stop[dst]
+            if dst in stops:
+                stop_duration = self.stops[dst]
 
                 print(f'Stopping at {dst} for {stop_duration} minutes')
 
@@ -68,10 +74,21 @@ class TripCalculator():
     def calc_route_between_two_points(self, src: str, dst: str, region: str = "IL") -> tuple[float, float]:
         '''Calculate route time using Waze API'''
         
+        key = f"{src.lower()}-{dst.lower()}"
+
+        if key in self.previous_routes:
+            # Route has already been calculated
+            return self.previous_routes[key]
+
         try:
             route = WazeRouteCalculator(src, dst, region)
             
-            return route.calc_route_info()
+            route_info = route.calc_route_info()
+
+            # Save route info
+            self.previous_routes[key] = route_info
+
+            return route_info
         except:
             raise Exception("Failed To Calculate Route!")
     
@@ -81,12 +98,7 @@ class TripCalculator():
 
         from_address, to_address, stops = self.from_address, self.to_address, self.stops
 
-        stops_locations: list[str] = []
-
-        for stop in stops:
-            location = stop[0]
-
-            stops_locations.append(location)
+        stops_locations = list(stops.keys())
 
         return [from_address, *stops_locations, to_address]
 

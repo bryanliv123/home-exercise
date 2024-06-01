@@ -1,4 +1,6 @@
 def split_array_into_tuples(arr):
+    '''Loops through list and insert every two items into tuple'''
+
     result = []
     
     for i in range(0, len(arr), 2):
