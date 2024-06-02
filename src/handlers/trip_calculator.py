@@ -66,7 +66,7 @@ class TripCalculator:
 
             info = self.calc_route_between_two_points(src, dst)
 
-            duration_in_minutes = info[0]
+            duration_in_minutes = info.duration
 
             total_trip_time += duration_in_minutes
 
@@ -94,7 +94,9 @@ class TripCalculator:
         try:
             route = WazeRouteCalculator(src, dst, region)
 
-            route_info = route.calc_route_info()
+            duration, distance = route.calc_route_info()
+
+            route_info = RouteInfo(distance=distance, duration=duration)
 
             # Save route info
             self.previous_routes[key] = route_info

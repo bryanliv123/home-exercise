@@ -1,4 +1,6 @@
-from typing import Tuple
+from pydantic import BaseModel
 
-# Tuple(Duration, Distance)
-RouteInfo = Tuple[float, float]
+
+class RouteInfo(BaseModel):
+    distance: float
+    duration: float
