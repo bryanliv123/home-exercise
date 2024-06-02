@@ -57,4 +57,12 @@ departure_time = trip_calculator.calc_trip_departure_time()
 
 print(f"leave {src} at {departure_time} to reach {dst} by {arrival_time}")
 ```
+To parse cmd arguments, the program uses a class called CmdArgsParser.
+* get_arguments - Returns all arguments the user entered, raises exception if some of the arguments are invalid
+* validate_stops_pattern - Validate that stops argument is in the correct format
+* 
+```bash
+args_parser = CmdArgsParser()
 
+src, dst, stops, arrival_time = args_parser.get_arguments()
+```
