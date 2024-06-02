@@ -7,7 +7,7 @@ from WazeRouteCalculator import WazeRouteCalculator
 
 from utils import subtract_minutes_from_time, time_to_minutes
 
-from .trip_calculator_types import RouteInfo
+from .types import RouteInfo
 
 
 class TripCalculator:
