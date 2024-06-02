@@ -1,4 +1,4 @@
-from handlers import CmdArgsParser, TripCalculator
+from scripts import CmdArgsParser, TripCalculator
 
 if __name__ == "__main__":
     args_parser = CmdArgsParser()

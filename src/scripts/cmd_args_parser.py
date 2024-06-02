@@ -14,7 +14,7 @@ class CmdArgsParser:
         self.parser.add_argument("--arrival_time", help="Arrival Time")
 
     def validate_stops_pattern(self, argument: List[str]):
-        """Validate that stops argument in correct format"""
+        """Validate that stops argument in correct format: location, 10m/10h,...."""
 
         if len(argument) % 2 != 0:
             raise argparse.ArgumentTypeError("Invalid number of stops arguments.")
