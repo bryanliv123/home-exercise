@@ -23,8 +23,10 @@ class CmdArgsParser:
             location = argument[i]
             duration = argument[i + 1]
 
-            if not isinstance(location, str) or not (
-                duration.endswith("h") or duration.endswith("m")
+            if (
+                not isinstance(location, str)
+                or not (duration.endswith("h") or duration.endswith("m"))
+                or not duration[:-1].isnumeric()
             ):
                 raise argparse.ArgumentTypeError(
                     f"Invalid stops argument types at position {i+1} and {i+2}. Must be str, duration"
@@ -40,7 +42,7 @@ class CmdArgsParser:
             args.arrival_time,
         )
 
-        stops_list: List[str] = stops.split(",") if stops else []
+        stops_list = stops.split(",") if stops else []
 
         try:
             self.validate_stops_pattern(stops_list)
