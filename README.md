@@ -37,7 +37,8 @@ leave ariel at 08:24 to reach tel-aviv by 09:00
 ```
 
 ## Architecture
-![image](https://github.com/bryanliv123/home-exercise/assets/60899499/807c3a5f-73b3-4d9c-8cd4-0e4221e58eff)
+![image](https://github.com/bryanliv123/home-exercise/assets/60899499/1e9405b1-5af4-4eb5-91bd-86b4679f9f28)
+
 
 The program uses a class called TripCalculator which exposes several methods.
 
